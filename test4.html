@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+The Random Letters
+</title>
+
+<style>
+
+   body{background-color:red;
+         background:url(./bg.png);
+		 
+		 
+		 }
+
+h2 {text-align:center;
+     font-size:35px;
+     font-weight: bold;
+    color: white;
+    height: 50px;
+    width: 500px;
+    background-color: rgba(97, 45, 97, 0.75);
+    padding-top: 17px;
+    border-radius: 12px;
+    position: relative;
+    left: 30%;
+    }
+	
+	
+	
+	.alpha {height:100px;
+     width:180px;
+	 border-radius:20px;
+	 background-color:black;
+	 border:2ps solid red;
+	 text-align:center;
+	 font-weight:bolder;
+	 font-size:27px;
+	 color:black;
+	  cursor: pointer;
+     outline: none;
+     border: none;
+      border-radius: 15px;
+      box-shadow:0px 10px 2px 5px #c5c129;
+	 }
+	 
+	 .alpha:hover {box-shadow:0px 10px 6px 5px rgba(242, 255, 45, 0.8);}
+
+     .alpha:active {
+     
+      box-shadow:0px 10px 7px 7px rgba(242, 255, 45, 0.8);
+      transform: translateY(5px);
+      }
+	 table { padding: 30px;
+           text-align: center;
+           width: 100%;
+           background-color: rgba(193, 185, 177, 0.6);
+		   border-radius: 32px;
+			}
+	 td {padding:10px;}
+	 
+	 #yourscore{
+	                 border-radius:12px;
+                     padding:7px;					 
+					  
+	                 }
+
+	 #score, #here2 {
+	         font-size:34px;
+			 color:rgba(239, 255, 21, 0.78);
+			 font-weight:bolder;
+	 
+	         }
+	 #restart {color:white;
+	            font-size:32;
+				width:250px;
+				font-weight:bolder;
+				box-shadow:1px 2px 6px 10px #656f10;
+				}
+	 #restart:hover {
+	                 
+					 background-color:green;
+	                  }
+
+	#restart:active {box-shadow:1px 2px 3px 13px #656f10;
+	                  transform: translateY(4px);
+					  }
+					  
+	.side {
+	     font-size:27px;
+		 font-weight:bolder;
+		 
+	
+	
+	       }
+		   .dvlp {font-size: 15px;border-radius:5px;
+    padding: 20px;
+    padding-left:5px;padding-top:5px;
+    transition: all 0.5s;
+    color:#fff;font-weight:bold;letter-spacing:2px;margin-top:15px;margin-left:122px;
+    width:180px;
+    z-index:1;position:absolute;cursor:pointer;
+    height:1px;overflow:hidden;}
+	
+	.dvlp:hover {height:90px;width:360px}
+.dname {text-decoration:none;width:200px;padding:5px;border-top-left-radius: 5px;border-top-right-radius: 5px;}
+.dvlp:hover .dname{text-decoration:underline;font-size:17px;color:#43C6DB;background:#000;box-shadow:2px 4px 9px 1px #fff;}
+
+.dvlp:hover .hcontent {display:block;background:#000;box-shadow:2px 4px 9px 1px #fff;}
+.hcontent {margin-top:0px;text-decoration:none;color:#fff;display:none;transition:all 0.5s;width:350px;
+               padding:10px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;border-bottom-left-radius: 5px;}
+.hprop {color:grey}
+
+.hcontent {}
+
+.foot {font-size: 15px;
+    display: block;
+    padding: 20px;
+    transition: all 1s;
+    color:#fff;display:block;}
+	
+	#inst {background-color:rgba(193, 185, 177, 0.6);
+	margin:5px;
+	border-radius:16px;
+	text-align:center;
+	}
+	p {font-size:20px;
+	color:white;
+	font-style:bold;
+	}
+	
+	h3 {font-size:27px;
+	border-bottom:black 2px solid;}
+	         
+	h4 {font-size:30px;}         
+			 
+					  
+					  
+</style>
+
+
+<script>
+
+var btnstorage=[];
+var dead=[];
+var ever=[];
+var deadcount=-1;
+var k = -1;
+var count = 0;
+var woncount=0;
+var lostcount=0;
+
+
+
+function gotem()
+{
+
+     btnstorage[k-1].innerHTML="! MATCHED !";
+	 btnstorage[k].innerHTML="! MATCHED !";
+
+}
+
+function afterpress()
+{
+  for(var i=1 ; i <= 16 ; i++)
+  {
+    document.getElementById("b"+i).disabled = true;
+	
+  }
+
+}
+
+
+function aftershown()
+{
+  for(var i=1 ; i <= 16 ; i++)
+  {
+    document.getElementById("b"+i).disabled = false;
+	
+  }
+
+}
+
+function lost()
+{
+        var lock=0;
+		
+         btnstorage[k-1].style.backgroundColor="black";
+	     btnstorage[k].style.backgroundColor="black";
+		 for(var i=1 ; i<= 16 ; i++)
+		    {
+			 document.getElementById("b"+i).disabled = false;
+			}
+			
+		for(var j=0; j <= deadcount ; j++)
+		   {
+		    lock=dead[j];
+			
+		    document.getElementById("b"+lock).disabled = true;
+		   }
+		   document.getElementById("here").innerHTML=woncount+lostcount;
+		   document.getElementById("score").innerHTML=(woncount*100)-(lostcount*10);
+			
+
+}
+
+function won()
+
+{        
+         woncount++;
+        deadcount++;
+		dead[deadcount]=ever[k-1];
+		 
+		deadcount++;
+		dead[deadcount]=ever[k];
+		btnstorage[k-1].style.backgroundColor="rgba(18, 187, 18, 0.55)";
+		 btnstorage[k].style.backgroundColor="rgba(18, 187, 18, 0.55)";
+		 aftershown();
+		 btnstorage[k-1].disabled = true;
+		 btnstorage[k].disabled = true;
+		 gotem();
+		 document.getElementById("here").innerHTML=woncount+lostcount;
+		  document.getElementById("here1").innerHTML=woncount;
+		  document.getElementById("score").innerHTML=(woncount*100)-(lostcount*10);
+		  var fscore=(woncount*100)-(lostcount*10);
+		  if(woncount==8)
+		  {alert("WELL DONE ...YOU FOUND ALL THE MATCHES !! YOUR FINAL SCORE IS "+fscore);
+		  location.reload(true);
+		  }
+		  
+}
+
+function rletter()
+{
+
+var text="";
+var possible="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+for (var i=0;i<1;i++)
+       {
+	   text+=possible.charAt(Math.floor(Math.random() * possible.length));
+	   }
+	   
+	  return text;
+
+}
+
+function provide()
+ {
+ 
+ var toll=[];
+ var c=0;
+ var temp="",capture;
+  
+  for(var i=1 ; i<=8 ; i++ )
+  {
+   
+   if(c==0)
+      {
+	  capture=rletter();
+	  temp=document.getElementById("b"+i);
+	  toll[c]=capture;
+	   temp.innerHTML=capture;
+	  c++;
+	  }else{capture=rletter();
+	  for(var y=0;y<c;y++)
+	    {
+		if(toll[y]==capture)
+		    {
+			capture=rletter();
+			y=-1;
+			}
+		}
+		temp=document.getElementById("b"+i);
+		toll[c]=capture;
+		temp.innerHTML=capture;
+		c++;
+   }
+  }
+  y=0;
+  for(var i=9 ; i<=16; i++ )
+      {y++;
+	   temp=document.getElementById("b"+i);
+	  temp.innerHTML=document.getElementById("b"+y).innerHTML;
+	  }
+ 
+ 
+ }
+
+
+function give(select)
+{
+
+k++;
+ever[k]=select;
+
+count++;
+   
+btnstorage[k]=document.getElementById("b"+select);
+
+btnstorage[k].style.backgroundColor="rgba(187, 25, 25, 0.63)";
+
+btnstorage[k].disabled = true;
+document.getElementById("here1").innerHTML=woncount;
+document.getElementById("score").innerHTML=(woncount*100)-(lostcount*10);
+
+
+
+  if(count==2)
+     {
+	 if(btnstorage[k-1].innerHTML==btnstorage[k].innerHTML)
+	        {
+			 afterpress();
+			setTimeout(won,800);
+			
+			 
+			}else {
+			       afterpress();
+			       setTimeout(lost,800);
+				   lostcount++;
+			       
+			      }
+       count=0;	 
+	 }
+ 
+	 
+
+}
+
+</script>
+
+
+
+</head>
+
+
+<body onload="provide()">
+
+<h2>ALPHABETIC SEARCH</h2>
+<br />
+<div id="inst">
+<h3>INSTRUCTIONS</h3>
+<p>There are 16 buttons with some letter <b>HIDDEN</b> within each button.</p>
+<p>There are only two identical letters and in total eight distinct letters. </p>
+<p>PRESS the buttons to reveal the hidden letter.<b>You are allowed to select two buttons per chance.</b></p>
+<p><b>IF THE LETTERS WITHIN THOSE SELECTED BUTTONS MATCHED.YOU GET 100 POINTS.</b></p>
+<p>If they did not match, the letters will hide again.</p>
+<p>The cost of every attemp is 10 POINTS.</p>
+<p>You can restart the game anytime you want, by pressing thr RESTART button. </p>
+<h4><b>NOW SCROLL DOWN AND BEGIN PLAYING</b></h4>
+</div>
+<table id="yourscore">
+<tr>
+<td><div class="side"><i>PAIRS MATCHED(+100)</i></div></td><td><div id="here2">YOUR SCORE IS</div></td><td><div class="side"><i>TOTAL ATTEMPTS(-10)</i></div></td>
+</tr>
+<tr>
+<td><div id="here1" class="side"></div></td><td><div id="score"></div></td><td><div id="here" class="side"></div></td>
+</tr>
+
+</table>
+<br />
+
+<table>
+<tr>
+<td><button id="b3" class="alpha" onclick="give(3)"></button></td><td><button id="b15" class="alpha" onclick="give(15)"></button></td><td><button id="b7" class="alpha" onclick="give(7)"></button></td><td><button id="b13" class="alpha" onclick="give(13)"></button></td>
+</tr>
+<tr>
+<td><button id="b12" class="alpha" onclick="give(12)"></button></td><td><button id="b11" class="alpha" onclick="give(11)"></button></td><td><button id="b14" class="alpha" onclick="give(14)"></button></td><td><button id="b8" class="alpha" onclick="give(8)"></button></td>
+</tr>
+<tr>
+<td><button id="b1" class="alpha" onclick="give(1)"></button></td><td><button id="b6" class="alpha" onclick="give(6)"></button></td><td><button id="b5" class="alpha" onclick="give(5)"></button></td><td><button id="b2" class="alpha" onclick="give(2)"></button></td>
+</tr>
+<tr>
+<td><button id="b4" class="alpha" onclick="give(4)"></button></td><td><button id="b16" class="alpha" onclick="give(16)"></button></td><td><button id="b10" class="alpha" onclick="give(10)"></button></td><td><button id="b9" class="alpha" onclick="give(9)"></button></td>
+</tr>
+<tr>
+</tr><tr></tr><tr></tr><tr></tr><tr><tr></tr><tr></tr><tr></tr><tr></tr>
+</tr>
+<tr>
+<td colspan="4"><button id="restart" onclick="location.reload(true)" class="alpha">RESTART</button></td><td></td>
+</tr>
+</table>
+<br />
+
+
+<br><br><br>
+<div class="footer">
+<hr>
+<div class="dvlp">
+<div class="dname">SAURAV S. KUMAR</div>
+<div class="hcontent">
+<label>Email-ID: <span class="hprop">kumarsaurav920@yahoo.com</span> </label>
+<br><br>
+<label>Mob. No. : <span class="hprop"><em>+917479266333</em></span></label></div>
+</div>
+<pre>
+<span class="foot">Developed By <b></b><span style="margin-left:60%;">All © Copyrights And Trademarks Are Reserved </span></span>
+</pre>
+</div>
+
+</body>
+
+
+</html>
